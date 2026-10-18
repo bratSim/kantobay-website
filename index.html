@@ -33,9 +33,46 @@ main{min-height:70vh}.page{display:none;padding:2.8rem 0 4.5rem}.page.active{dis
 footer{border-top:1px solid var(--line);padding:2rem 0;background:#0d110e;color:var(--muted)}.foot{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}.foot strong{font-family:Cinzel,serif;color:var(--gold2)}
 @media(max-width:900px){.topbar{flex-wrap:wrap}.nav{order:3;width:100%;justify-content:flex-start}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero:after{right:-10%;opacity:.13;width:55vw}}
 @media(max-width:580px){.grid,.formgrid{grid-template-columns:1fr}.formgrid .full{grid-column:auto}.section-head{display:block}.brand{font-size:1rem}.nav button{padding:.4rem .45rem;font-size:.82rem}.hero{padding-top:4rem}.topbar{gap:.45rem}}
+
+/* V10: refined motion, focus states and custom pointer */
+:root{--ease-out:cubic-bezier(.2,.75,.25,1);--glow:rgba(199,169,107,.18)}
+body{background-image:radial-gradient(ellipse at 12% 8%,rgba(88,112,78,.12),transparent 32%),radial-gradient(ellipse at 90% 55%,rgba(199,169,107,.055),transparent 28%)}
+::selection{background:var(--gold);color:#121713}
+:focus-visible{outline:2px solid var(--gold2)!important;outline-offset:3px}
+.topbar{transition:box-shadow .3s ease,border-color .3s ease;background:rgba(17,22,18,.88)}
+.topbar.scrolled{box-shadow:0 12px 34px rgba(0,0,0,.28);border-color:rgba(199,169,107,.42)}
+.brand{transition:transform .35s var(--ease-out),letter-spacing .35s ease}.brand:hover{transform:translateY(-1px);letter-spacing:.105em}.sigil{transition:transform .6s var(--ease-out),box-shadow .35s ease}.brand:hover .sigil{transform:rotate(8deg) scale(1.04);box-shadow:0 0 22px var(--glow)}
+.nav button,.lang button,.subnav button{position:relative;transition:color .22s ease,background .22s ease,border-color .22s ease,transform .22s var(--ease-out)}
+.nav button:hover,.lang button:hover,.subnav button:hover{transform:translateY(-2px)}
+.nav button.active:after{content:"";position:absolute;left:20%;right:20%;bottom:-3px;height:2px;background:var(--gold);box-shadow:0 0 12px var(--glow);animation:navLine .3s var(--ease-out)}
+@keyframes navLine{from{transform:scaleX(.25);opacity:0}to{transform:scaleX(1);opacity:1}}
+.hero{isolation:isolate;background-size:100% 100%;animation:heroEnter .85s var(--ease-out) both}
+.hero:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(115deg,transparent 15%,rgba(234,213,161,.055) 48%,transparent 68%);transform:translateX(-100%);animation:heroShimmer 1.8s .35s ease-out both}
+.hero:after{transition:transform 1s var(--ease-out),opacity .5s ease;animation:keepAlive 8s ease-in-out infinite alternate}
+.hero h1{animation:riseIn .7s .08s var(--ease-out) both}.hero p{animation:riseIn .7s .2s var(--ease-out) both}.hero .actions,.hero .statusline{animation:riseIn .7s .32s var(--ease-out) both}
+@keyframes heroEnter{from{opacity:.65;filter:saturate(.65)}to{opacity:1;filter:saturate(1)}}@keyframes heroShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}@keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}@keyframes keepAlive{from{transform:translateY(0);opacity:.17}to{transform:translateY(-9px);opacity:.25}}
+.btn{transition:transform .22s var(--ease-out),box-shadow .25s ease,background .2s ease,border-color .2s ease}.btn:hover{transform:translateY(-2px);box-shadow:0 9px 24px rgba(0,0,0,.22),0 0 0 1px rgba(234,213,161,.12)}.btn:active{transform:translateY(0) scale(.985)}
+.card,.event-card,.law,.media-card,.panel,.radio-panel{transition:transform .28s var(--ease-out),border-color .28s ease,box-shadow .28s ease,background-color .28s ease}
+.card:hover,.event-card:hover,.law:hover,.media-card:hover{transform:translateY(-4px);border-color:rgba(199,169,107,.72);box-shadow:0 14px 34px rgba(0,0,0,.2),0 0 0 1px rgba(199,169,107,.035)}
+.card:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 0%,rgba(234,213,161,.045) 48%,transparent 72%);transform:translateX(-110%);transition:transform .65s var(--ease-out)}.card:hover:after{transform:translateX(110%)}
+.card h3,.section h2,.page-title{ text-wrap:balance }
+.search,.field{transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}.search:focus,.field:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(199,169,107,.12);background:#151c16;outline:none}
+.news-item{transition:transform .25s var(--ease-out),border-color .25s ease}.news-item:hover{transform:translateX(4px);border-color:var(--gold2)}
+.district-gallery img,.news-image,.media-card img{transition:transform .35s var(--ease-out),filter .35s ease,border-color .35s ease}.district-gallery img:hover,.news-image:hover,.media-card img:hover{transform:scale(1.015);filter:saturate(1.08);border-color:var(--gold)}
+.calendar-day{transition:background .18s ease,box-shadow .18s ease}.calendar-day:hover{background:#202b22;box-shadow:inset 0 0 0 1px rgba(199,169,107,.35)}.calendar-event-chip{transition:transform .18s ease,background .18s ease}.calendar-event-chip:hover{transform:translateX(2px);background:#435840}
+footer{border-top:1px solid var(--line)}
+/* Animated scroll progress indicator */
+#scrollProgress{position:fixed;z-index:100;top:0;left:0;width:100%;height:2px;pointer-events:none;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:left;box-shadow:0 0 10px rgba(199,169,107,.4)}
+/* Custom pointer is desktop-only; native pointer remains on touch screens. */
+@media (pointer:fine) and (prefers-reduced-motion:no-preference){body.custom-pointer,body.custom-pointer button,body.custom-pointer a,body.custom-pointer summary,body.custom-pointer select{cursor:none}#customCursor{position:fixed;left:0;top:0;width:24px;height:24px;border:1px solid rgba(234,213,161,.95);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0;transition:width .18s ease,height .18s ease,border-color .18s ease,background .18s ease,opacity .2s ease;mix-blend-mode:screen}#customCursor:after{content:"";position:absolute;width:4px;height:4px;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--gold2);border-radius:50%;box-shadow:0 0 8px var(--gold)}#customCursor.visible{opacity:1}#customCursor.hovering{width:38px;height:38px;background:rgba(199,169,107,.12);border-color:#fff}#customCursor.down{width:17px;height:17px;background:rgba(199,169,107,.25)}}
+#revealSentinel{display:none}.reveal-ready .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s var(--ease-out),transform .55s var(--ease-out)}.reveal-ready .reveal.in-view{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal-ready .reveal{opacity:1;transform:none}#customCursor{display:none}}
+@media(max-width:700px){.hero:after{opacity:.1}.card:hover,.event-card:hover,.law:hover,.media-card:hover{transform:none}}
+
 </style>
 </head>
 <body>
+<div id="scrollProgress" aria-hidden="true"></div><div id="customCursor" aria-hidden="true"></div>
 <header class="topbar">
 <a class="brand" href="#home" data-go="home"><span class="sigil">K</span><span>KANTOBAY</span></a>
 <nav class="nav" aria-label="Main navigation">
@@ -164,4 +201,17 @@ async function loadClaims(){if(!supabaseClient)return;const own=document.getElem
 document.getElementById('claimForm').addEventListener('submit',async e=>{e.preventDefault();const status=document.getElementById('claimMessage');if(!currentUser){status.textContent='Bitte melde dich zuerst unter Verwaltung an, bevor du eine Anzeige einreichst.';return}const payload={against_person:document.getElementById('claimAgainst').value.trim(),category:document.getElementById('claimCategory').value,title:document.getElementById('claimTitle').value.trim(),details:document.getElementById('claimDetails').value.trim(),evidence:document.getElementById('claimEvidence').value.trim(),created_by:currentUser.id};const {error}=await supabaseClient.from('claims').insert(payload);status.textContent=error?'Anzeige konnte nicht eingereicht werden: '+error.message:'Anzeige wurde vertraulich eingereicht.';if(!error){e.target.reset();await loadClaims()}});
 
 initSupabase();loadPublicPosts();renderNews();loadSenderAssets();loadCalendar();loadDistricts();loadCompanies();
+
+// V10 polish: scroll progress, desktop cursor and gentle reveal transitions.
+(function(){
+ const progress=document.getElementById('scrollProgress');
+ const topbar=document.querySelector('.topbar');
+ let scheduled=false;
+ function updateScroll(){const max=document.documentElement.scrollHeight-window.innerHeight;const ratio=max>0?window.scrollY/max:0;if(progress)progress.style.transform='scaleX('+Math.min(1,Math.max(0,ratio))+')';if(topbar)topbar.classList.toggle('scrolled',window.scrollY>8);scheduled=false;}
+ window.addEventListener('scroll',()=>{if(!scheduled){scheduled=true;requestAnimationFrame(updateScroll)}},{passive:true});window.addEventListener('resize',updateScroll,{passive:true});updateScroll();
+ const cursor=document.getElementById('customCursor');
+ if(cursor&&window.matchMedia('(pointer:fine)').matches&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.add('custom-pointer');let shown=false;window.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';if(!shown){cursor.classList.add('visible');shown=true}},{passive:true});document.addEventListener('mouseleave',()=>cursor.classList.remove('visible'));document.addEventListener('mouseenter',()=>cursor.classList.add('visible'));document.addEventListener('mouseover',e=>cursor.classList.toggle('hovering',!!e.target.closest('a,button,summary,select,[role="button"],.district-card,.calendar-event-chip')));document.addEventListener('mousedown',()=>cursor.classList.add('down'));document.addEventListener('mouseup',()=>cursor.classList.remove('down'));}
+ if('IntersectionObserver' in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('reveal-ready');const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in-view');observer.unobserve(entry.target)}}),{threshold:.08,rootMargin:'0px 0px -25px 0px'});function observeReveals(root=document){root.querySelectorAll('.page.active .section-head,.page.active .card,.page.active .panel,.page.active .event-card,.page.active .law,.page.active .radio-panel,.page.active .news-item,.page.active .media-card').forEach(el=>{if(!el.classList.contains('reveal')){el.classList.add('reveal');observer.observe(el)}})}observeReveals();const mo=new MutationObserver(()=>{observeReveals();updateScroll()});document.querySelectorAll('.page').forEach(page=>mo.observe(page,{attributes:true,attributeFilter:['class'],childList:true,subtree:true}));}
+})();
+
 </script></body></html>
